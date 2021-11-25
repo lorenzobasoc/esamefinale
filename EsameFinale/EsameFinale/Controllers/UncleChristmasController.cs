@@ -35,12 +35,32 @@ namespace EsameFinale.Controllers
             var validator = new UncleChristmasAddValidator();
             await validator.ValidateUncleChristmas(model, db);
             if (!validator.Result) {
+                _logger.LogError(new InvalidOperationException(), validator.Message);
                 throw new InvalidOperationException(validator.Message);
             } else {
                 db.Add(model);
                 await db.SaveChangesAsync();
                 return new UncleChristmasAddResultDto { NewId = model.Id };
             }
+        }
+
+        [HttpGet]
+        public async Task<List<string>> GetUncles() {
+            using var db = _dbFactory.CreateDbContext();
+            var unclesGiftsList = new List<string>();
+            var uncles = await db.UncleChristmas.ToListAsync();
+            foreach (var u in uncles) {
+                var uncleId = u.Id;
+                var numGifts = await GetNumGiftsOfUncle(uncleId);
+                unclesGiftsList.Add($"{u.Name} has got {numGifts} gifts in his sled.");
+            }
+            return unclesGiftsList;
+        }
+
+        private async Task<string> GetNumGiftsOfUncle(int uncleId) {
+            using var db = _dbFactory.CreateDbContext();
+            var count = await db.GiftOperations.CountAsync(o => o.UncleChristmasId == uncleId);
+            return count.ToString();
         }
     }
 }

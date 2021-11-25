@@ -20,12 +20,12 @@ namespace EsameFinale.Validation
             if (isNameNull || isNameEmpty) {
                 Message = "Error: You have to insert uncle christmas's name.";
                 Result = false;
-            }
-            if (isNameDuplicated) {
+            } else if (isNameDuplicated) {
                 Message = "Error: This name is already used.";
                 Result = false;
+            } else {
+                Result = true;
             }
-            Result = true;
         }
     }
 }

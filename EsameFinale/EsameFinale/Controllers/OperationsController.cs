@@ -39,6 +39,7 @@ namespace EsameFinale.Controllers
                 db.Add(model);
                 await db.SaveChangesAsync();
             } else {
+                _logger.LogError(new InvalidOperationException(), validator.Message);
                 throw new InvalidOperationException(validator.Message);
             }
             db.Dispose();
