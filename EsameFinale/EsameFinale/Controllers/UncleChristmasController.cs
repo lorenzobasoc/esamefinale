@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EsameFinale.Validation;
 
 namespace EsameFinale.Controllers
 {
@@ -31,8 +32,10 @@ namespace EsameFinale.Controllers
             var model = new UncleChristmas {
                 Name = uncleChristmas.Name,
             };
-            if (model.Name == null || model.Name == "") {
-                throw new InvalidOperationException("The uncle christmas's name is required.");
+            var validator = new UncleChristmasAddValidator();
+            await validator.ValidateUncleChristmas(model, db);
+            if (!validator.Result) {
+                throw new InvalidOperationException(validator.Message);
             } else {
                 db.Add(model);
                 await db.SaveChangesAsync();

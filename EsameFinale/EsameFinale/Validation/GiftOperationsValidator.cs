@@ -14,6 +14,21 @@ namespace EsameFinale.Validation
         public string Message { get; private set; }
 
         public async Task ValidateGiftOperation(GiftOperation model, ChristmasDbContext db) {
+            var giftIdExists = await db.Gifts.AnyAsync(g => g.Id == model.GiftId);
+            var elfIdExists = await db.Elves.AnyAsync(e => e.Id == model.ElfId);
+            if (elfIdExists && giftIdExists) {
+                await ValidateOpType(model, db);
+            } else if(!elfIdExists){
+                Message = "Error: This elf's Id doesn't exist.";
+                Result = false;
+            } else {
+                Message = "Error: This gift's Id doese't exist.";
+                Result = false;
+            }
+
+        }
+
+        private async Task ValidateOpType(GiftOperation model, ChristmasDbContext db) {
             Result = model.OperationId switch {
                 1 => await ValidateOp1(model, db),
                 2 => await ValidateOp2(model, db),
@@ -28,6 +43,10 @@ namespace EsameFinale.Validation
         }
 
         private async Task<bool> ValidateOp1(GiftOperation model, ChristmasDbContext db) {
+            if (model.UncleChristmasId != 0) {
+                Message = "Error: You can't add Uncle Christmas reference in this operation type.";
+                return false;
+            }
             var isOp1Duplicate = await db.GiftOperations.AnyAsync(o => o.OperationId == model.OperationId && o.GiftId == model.GiftId);
             if (isOp1Duplicate) {
                 Message = "Error: This gift is already built.";
@@ -36,6 +55,10 @@ namespace EsameFinale.Validation
         }
 
         private async Task<bool> ValidateOp2(GiftOperation model, ChristmasDbContext db) {
+            if (model.UncleChristmasId != 0) {
+                Message = "Error: You can't add Uncle Christmas reference in this operation type.";
+                return false;
+            }
             var isThereOp1 = await db.GiftOperations.AnyAsync(o => o.OperationId == 1 && o.GiftId == model.GiftId);
             var isOp2Duplicate = await db.GiftOperations.AnyAsync(o => o.OperationId == model.OperationId && o.GiftId == model.GiftId);
             if (isThereOp1 && !isOp2Duplicate) {
