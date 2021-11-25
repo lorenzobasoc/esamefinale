@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SantaClausCrm.DataAccess;
-using SantaClausCrm.Models;
+using EsameFinale.DataAccess;
+using EsameFinale.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +18,13 @@ namespace EsameFinale.Validation
                 1 => await ValidateOp1(model, db),
                 2 => await ValidateOp2(model, db),
                 3 => await ValidateOp3(model, db),
-                _ => false,
+                _ => HandleInvalidOp(),
             };
+        }
+
+        private bool HandleInvalidOp() {
+            Message = "Error: Invalid operation type.";
+            return false;
         }
 
         private async Task<bool> ValidateOp1(GiftOperation model, ChristmasDbContext db) {
@@ -42,6 +47,14 @@ namespace EsameFinale.Validation
         }
 
         private async Task<bool> ValidateOp3(GiftOperation model, ChristmasDbContext db) {
+            if (model.UncleChristmasId == 0) {
+                Message = "Error: You have to set the Uncle Christmas reference.";
+                return false;
+            }
+            if (!await db.UncleChristmas.AnyAsync(u => u.Id == model.UncleChristmasId)) {
+                Message = "Error: There is no Uncle Christmas with that Id.";
+                return false;
+            }
             var isThereOp1 = await db.GiftOperations.AnyAsync(o => o.OperationId == 1 && o.GiftId == model.GiftId);
             var isThereOp2 = await db.GiftOperations.AnyAsync(o => o.OperationId == 2 && o.GiftId == model.GiftId);
             var isOp3Duplicate = await db.GiftOperations.AnyAsync(o => o.OperationId == model.OperationId && o.GiftId == model.GiftId);

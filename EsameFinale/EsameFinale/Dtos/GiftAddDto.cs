@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations;
-
-namespace SantaClausCrm.Dtos
+namespace EsameFinale.Dtos
 {
     public class GiftAddDto
     {

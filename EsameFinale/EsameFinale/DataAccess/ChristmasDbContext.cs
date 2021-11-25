@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using SantaClausCrm.Models;
+using EsameFinale.Models;
 
-namespace SantaClausCrm.DataAccess
+namespace EsameFinale.DataAccess
 {
     public class ChristmasDbContext : DbContext
     {
@@ -12,5 +12,6 @@ namespace SantaClausCrm.DataAccess
         public DbSet<Operation> Operations { get; set; }
         public DbSet<GiftOperation> GiftOperations { get; set; }
         public DbSet<Elf> Elves { get; set; }
+        public DbSet<UncleChristmas> UncleChristmas { get; set; }
     }
 }

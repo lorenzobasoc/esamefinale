@@ -1,4 +1,4 @@
-namespace SantaClausCrm.Dtos
+namespace EsameFinale.Dtos
 {
     public class GiftAddResultDto
     {

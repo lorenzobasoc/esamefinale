@@ -1,12 +1,11 @@
-﻿using EsameFinale.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EsameFinale.Models
+namespace EsameFinale.Dtos
 {
-    public class UncleChristmas : BaseModel
+    public class UncleChristmasAddDto
     {
         public string Name { get; set; }
     }

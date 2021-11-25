@@ -1,4 +1,5 @@
-namespace SantaClausCrm.Models
+
+namespace EsameFinale.Models
 {
     public class GiftOperation : BaseModel
     {
@@ -10,5 +11,8 @@ namespace SantaClausCrm.Models
 
         public int ElfId { get; set; }
         public Elf Elf { get; set; }
+
+        public int UncleChristmasId { get; set; }
+        public UncleChristmas UncleChristmas { get; set; }
     }
 }

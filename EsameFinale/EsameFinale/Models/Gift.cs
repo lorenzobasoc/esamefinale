@@ -1,4 +1,4 @@
-namespace SantaClausCrm.Models
+namespace EsameFinale.Models
 {
     public class Gift : BaseModel
     {

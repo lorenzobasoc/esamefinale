@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using SantaClausCrm.DataAccess;
-using SantaClausCrm.Dtos;
-using SantaClausCrm.Models;
+using EsameFinale.DataAccess;
+using EsameFinale.Dtos;
+using EsameFinale.Models;
 using System;
 using EsameFinale.Validation;
 
-namespace SantaClausCrm.Controllers
+namespace EsameFinale.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
@@ -31,6 +31,7 @@ namespace SantaClausCrm.Controllers
                 OperationId = dto.OperationId,
                 ElfId = dto.ElfId,
                 GiftId = dto.GiftId,
+                UncleChristmasId = dto.UncleChristmasId,
             };
             var validator = new GiftOperationsValidator();
             await validator.ValidateGiftOperation(model, db);
@@ -40,6 +41,7 @@ namespace SantaClausCrm.Controllers
             } else {
                 throw new InvalidOperationException(validator.Message);
             }
+            db.Dispose();
         }
 
         

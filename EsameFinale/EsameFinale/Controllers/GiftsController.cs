@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using SantaClausCrm.DataAccess;
-using SantaClausCrm.Dtos;
-using SantaClausCrm.Models;
+using EsameFinale.DataAccess;
+using EsameFinale.Dtos;
+using EsameFinale.Models;
 using System;
 
-namespace SantaClausCrm.Controllers
+namespace EsameFinale.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
@@ -29,8 +29,8 @@ namespace SantaClausCrm.Controllers
             var model = new Gift {
                 Product = dto.Product,
             };
-            if (model.Product == null) {
-                throw new InvalidOperationException();
+            if (model.Product == null || model.Product == "") {
+                throw new InvalidOperationException("Gift's name is required.");
             } else {
                 db.Add(model);
                 await db.SaveChangesAsync();
