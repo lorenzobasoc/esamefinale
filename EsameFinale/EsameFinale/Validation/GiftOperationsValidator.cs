@@ -51,6 +51,7 @@ namespace EsameFinale.Validation
             if (isOp1Duplicate) {
                 Message = "Error: This gift is already built.";
             }
+            model.UncleChristmasId = null;
             return !isOp1Duplicate;
         }
 
@@ -59,18 +60,19 @@ namespace EsameFinale.Validation
                 Message = "Error: You can't add Uncle Christmas reference in this operation type.";
                 return false;
             }
+            model.UncleChristmasId = null;
             var isThereOp1 = await db.GiftOperations.AnyAsync(o => o.OperationId == 1 && o.GiftId == model.GiftId);
             var isOp2Duplicate = await db.GiftOperations.AnyAsync(o => o.OperationId == model.OperationId && o.GiftId == model.GiftId);
             if (isThereOp1 && !isOp2Duplicate) {
                 return true;
             } else {
-                Message = "Error: This gift is not built yet or is altready packed.";
+                Message = "Error: This gift is not built yet or is altready packaged.";
                 return false;
             }
         }
 
         private async Task<bool> ValidateOp3(GiftOperation model, ChristmasDbContext db) {
-            if (model.UncleChristmasId == 0) {
+            if (model.UncleChristmasId is 0) {
                 Message = "Error: You have to set the Uncle Christmas reference.";
                 return false;
             }
@@ -83,8 +85,11 @@ namespace EsameFinale.Validation
             var isOp3Duplicate = await db.GiftOperations.AnyAsync(o => o.OperationId == model.OperationId && o.GiftId == model.GiftId);
             if (isThereOp1 && isThereOp2 && !isOp3Duplicate) {
                 return true;
+            } else if(!isThereOp1 || !isThereOp2) {
+                Message = "Error: You have to build and package the gitf before to put it in the sled";
+                return false;
             } else {
-                Message = "Error: You have to build and package the gitf before to put it in the sled, or maybe this gift is already on it.";
+                Message = "Error: This gift is already on the sled.";
                 return false;
             }
         }

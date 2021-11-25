@@ -30,7 +30,7 @@ namespace EsameFinale.Controllers
                 Product = dto.Product,
             };
             if (model.Product == null || model.Product == "") {
-                var exMessage = "Gift's name is required.";
+                var exMessage = "Error: Gift's name is required.";
                 _logger.LogError(new InvalidOperationException(), exMessage);
                 throw new InvalidOperationException(exMessage);
             } else {

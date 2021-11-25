@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EsameFinale.Validation;
 
@@ -45,7 +44,7 @@ namespace EsameFinale.Controllers
         }
 
         [HttpGet]
-        public async Task<List<string>> GetUncles() {
+        public async Task<List<string>> Get() {
             using var db = _dbFactory.CreateDbContext();
             var unclesGiftsList = new List<string>();
             var uncles = await db.UncleChristmas.ToListAsync();

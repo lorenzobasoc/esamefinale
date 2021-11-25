@@ -12,7 +12,7 @@ namespace EsameFinale.Models
         public int ElfId { get; set; }
         public Elf Elf { get; set; }
 
-        public int UncleChristmasId { get; set; }
+        public int? UncleChristmasId { get; set; }
         public UncleChristmas UncleChristmas { get; set; }
     }
 }
