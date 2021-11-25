@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using SantaClausCrm.DataAccess;
 using SantaClausCrm.Dtos;
 using SantaClausCrm.Models;
+using System;
+using EsameFinale.Validation;
 
 namespace SantaClausCrm.Controllers
 {
@@ -24,14 +26,23 @@ namespace SantaClausCrm.Controllers
 
         [HttpPost]
         public async Task Add(GiftOperationAddDto dto) {
-            using var db = _dbFactory.CreateDbContext();
+            var db = _dbFactory.CreateDbContext();
             var model = new GiftOperation {
                 OperationId = dto.OperationId,
                 ElfId = dto.ElfId,
                 GiftId = dto.GiftId,
             };
-            db.Add(model);
-            await db.SaveChangesAsync();
+            var validator = new GiftOperationsValidator();
+            await validator.ValidateGiftOperation(model, db);
+            if (validator.Result) {
+                db.Add(model);
+                await db.SaveChangesAsync();
+            } else {
+                throw new InvalidOperationException(validator.Message);
+            }
         }
+
+        
+
     }
 }
