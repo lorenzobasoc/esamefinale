@@ -9,7 +9,7 @@ using SantaClausCrm.Models;
 namespace SantaClausCrm.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class OperationsController : ControllerBase
     {
         private readonly ILogger<OperationsController> _logger;

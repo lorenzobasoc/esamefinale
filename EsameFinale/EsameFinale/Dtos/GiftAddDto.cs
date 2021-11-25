@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SantaClausCrm.Dtos
 {
     public class GiftAddDto

@@ -1,3 +1,4 @@
+using EsameFinale.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +20,11 @@ namespace SantaClausCrm
 
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers();
-            services.AddDbContext<ChristmasDbContext>(options => options.UseNpgsql(Configuration["ConnectionString"]),
+            services.AddScoped<ExceptionsMiddleware>();
+            services.AddDbContext<ChristmasDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ConnectionString")),
                 contextLifetime: ServiceLifetime.Scoped,
                 optionsLifetime: ServiceLifetime.Singleton);
-            services.AddDbContextFactory<ChristmasDbContext>(options => options.UseNpgsql(Configuration["ConnectionString"]),
+            services.AddDbContextFactory<ChristmasDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("ConnectionString")),
                 lifetime: ServiceLifetime.Singleton);
         }
 
@@ -30,6 +32,7 @@ namespace SantaClausCrm
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseMiddleware<ExceptionsMiddleware>();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();

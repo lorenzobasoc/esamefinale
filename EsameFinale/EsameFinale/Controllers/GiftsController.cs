@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using SantaClausCrm.DataAccess;
 using SantaClausCrm.Dtos;
 using SantaClausCrm.Models;
+using System;
 
 namespace SantaClausCrm.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class GiftsController : ControllerBase
     {
         private readonly ILogger<GiftsController> _logger;
@@ -28,9 +29,13 @@ namespace SantaClausCrm.Controllers
             var model = new Gift {
                 Product = dto.Product,
             };
-            db.Add(model);
-            await db.SaveChangesAsync();
-            return new GiftAddResultDto { NewId =  model.Id };
+            if (model.Product == null) {
+                throw new InvalidOperationException();
+            } else {
+                db.Add(model);
+                await db.SaveChangesAsync();
+                return new GiftAddResultDto { NewId =  model.Id };
+            }
         }
     }
 }
