@@ -1,4 +1,3 @@
-
 namespace EsameFinale.Models
 {
     public class GiftOperation : BaseModel

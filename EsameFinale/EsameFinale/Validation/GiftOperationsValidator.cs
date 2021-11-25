@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using EsameFinale.DataAccess;
 using EsameFinale.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EsameFinale.Validation
@@ -25,7 +22,6 @@ namespace EsameFinale.Validation
                 Message = "Error: This gift's Id doese't exist.";
                 Result = false;
             }
-
         }
 
         private async Task ValidateOpType(GiftOperation model, ChristmasDbContext db) {
